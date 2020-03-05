@@ -38,7 +38,7 @@ export ARM_TENANT_ID=xxxxxxxx
 
 ## Getting started
 
-Update the default variables defined in [variables.tf](./terraform/variables.tf). The storage name has to be unique, that is why an id has to be add to the original name. 
+Update the default variables defined in [variables.tf](./terraform/variables.tf). The storage name has to be unique, that is why an id has to be add to the original name. It should be lower case, without any special characters.
 
 Run the `terraform init` command to fetch the Azure provider's configuration and set-up the Azure storage backend.
 
