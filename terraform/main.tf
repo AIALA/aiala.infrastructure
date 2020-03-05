@@ -60,11 +60,6 @@ resource "azurerm_app_service" "aiala-api" {
   resource_group_name = azurerm_resource_group.aiala.name
   location            = var.location
   app_service_plan_id = azurerm_app_service_plan.aiala.id
-
-  site_config {
-    dotnet_framework_version = "v4.0"
-  }
-
 }
 
 resource "azurerm_app_service" "aiala-sts" {
@@ -72,10 +67,6 @@ resource "azurerm_app_service" "aiala-sts" {
   resource_group_name = azurerm_resource_group.aiala.name
   location            = var.location
   app_service_plan_id = azurerm_app_service_plan.aiala.id
-  
-  site_config {
-    dotnet_framework_version = "v4.0"
-  }
 }
 
 resource "azurerm_app_service" "aiala-app" {
@@ -83,10 +74,6 @@ resource "azurerm_app_service" "aiala-app" {
   resource_group_name = azurerm_resource_group.aiala.name
   location            = var.location
   app_service_plan_id = azurerm_app_service_plan.aiala.id
-
-  site_config {
-    dotnet_framework_version = "v4.0"
-  }
 }
 
 resource "azurerm_application_insights" "aiala" {
