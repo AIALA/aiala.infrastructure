@@ -27,7 +27,7 @@ The [monthly estimated cost](https://azure.com/e/e027e7c1ecb149fb94c336fef32c369
 ```
 az ad sp create-for-rbac --role="Contributor" --scopes="/subscriptions/${SUBSCRIPTION_ID}"
 ```
-- Update your environment variables with your subscription ID, client ID, client secret and tenant ID
+- Update your environment variables with your subscription ID (used above), client ID (`appId`), client secret (`password`) and tenant ID (`tenant`)
 ``` 
 export ARM_SUBSCRIPTION_ID=xxxxxxxx
 export ARM_CLIENT_ID=xxxxxxx
@@ -38,11 +38,11 @@ export ARM_TENANT_ID=xxxxxxxx
 
 ## Getting started
 
-Update the default variables defined in [variables.tf](./terraform/variables.tf). The storage name has to be unique, that is why an id has to be add to the original name. It should be lower case, without any special characters.
+Update the default variables defined in [variables.tf](./terraform/variables.tf). Some Azure resources have to be globally unique, that is why an id has to be added to the original name. This ID should be lower case, without any special characters.
 
-Run the `terraform init` command to fetch the Azure provider's configuration and set-up the Azure storage backend.
+In the 'terraform' folder, run the `terraform init` command to fetch the Azure provider's configuration and set-up the Azure storage backend.
 
-Check which Terraform will perform before applying the script by running `terraform plan`.
+Check which actions Terraform will perform before applying the script by running `terraform plan`.
 
 Apply your plan with : `terraform apply`
 

@@ -10,10 +10,10 @@ variable "location" {
   default     = "West Europe"
 }
 
-variable "storage_id" {
+variable "app_id" {
   type        = string
-  description = "Azure region where to create resources."
-  default     = "my_unique_identifier"
+  description = "Unique identifier to guarantee globally unique resource names."
+  default     = "myuniqueid"
 }
 
 variable "db-login" {

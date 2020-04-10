@@ -10,7 +10,7 @@ resource "azurerm_resource_group" "aiala" {
 
 # Blob storage and containers for pictures data
 resource "azurerm_storage_account" "aiala" {
-  name                     = "aiala${var.storage_id}${var.environment}"
+  name                     = "aiala${var.app_id}${var.environment}"
   resource_group_name      = azurerm_resource_group.aiala.name
   location                 = var.location
   account_kind             = "StorageV2"
@@ -56,21 +56,21 @@ resource "azurerm_app_service_plan" "aiala" {
 }
 
 resource "azurerm_app_service" "aiala-api" {
-  name                = "aiala-api-${var.environment}"
+  name                = "aiala-api-${var.app_id}-${var.environment}"
   resource_group_name = azurerm_resource_group.aiala.name
   location            = var.location
   app_service_plan_id = azurerm_app_service_plan.aiala.id
 }
 
 resource "azurerm_app_service" "aiala-sts" {
-  name                = "aiala-sts-${var.environment}"
+  name                = "aiala-sts-${var.app_id}-${var.environment}"
   resource_group_name = azurerm_resource_group.aiala.name
   location            = var.location
   app_service_plan_id = azurerm_app_service_plan.aiala.id
 }
 
 resource "azurerm_app_service" "aiala-app" {
-  name                = "aiala-app-${var.environment}"
+  name                = "aiala-app-${var.app_id}-${var.environment}"
   resource_group_name = azurerm_resource_group.aiala.name
   location            = var.location
   app_service_plan_id = azurerm_app_service_plan.aiala.id
@@ -85,7 +85,7 @@ resource "azurerm_application_insights" "aiala" {
 
 # SQL servers for the portal and STS databases
 resource "azurerm_sql_server" "aiala" {
-  name                         = "aiala-sql-${var.environment}"
+  name                         = "aiala-sql-${var.app_id}-${var.environment}"
   resource_group_name          = azurerm_resource_group.aiala.name
   location                     = var.location
   version                      = "12.0"
