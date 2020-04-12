@@ -60,6 +60,33 @@ resource "azurerm_app_service" "aiala-api" {
   resource_group_name = azurerm_resource_group.aiala.name
   location            = var.location
   app_service_plan_id = azurerm_app_service_plan.aiala.id
+
+  app_settings = {
+    "ApplicationInsights:InstrumentationKey" = azurerm_application_insights.aiala.instrumentation_key
+    "Notification:Smtp:Credentials:Password	"= var.db-pwd
+    "Notification:Smtp:Credentials:Username" = var.db-login
+    "Notification:Smtp:EnableSsl"            = true
+    "Notification:Smtp:Host"                 = smtp.sendgrid.net
+    "Notification:Smtp:Port"                 = 587
+    "Recaptcha:Enabled"                      = true
+    "Recaptcha:Secret"                       = var.db-pwd
+    "ConnectionStrings:PortalDatabase"       = "data source=${azurerm_sql_database.aiala-portal.name}.database.windows.net;initial catalog=database;User ID=${var.db-login};Password=${var.db-pwd};Trusted_Connection=False;Encrypt=True;Connection Timeout=30"
+    "ConnectionStrings:PortalStorage"        = azurerm_storage_account.aiala.secondary_connection_string
+    "Directory:ApiBaseUrl"                   = azurerm_app_service.aiala-api.default_site_hostname
+    "Directory:Links:ConfirmInvitation"      = "${azurerm_app_service.aiala-app.default_site_hostname}/public/{0}/invitation/{1}?token={2}"
+    "Directory:Links:ConfirmRegistration"    = "${azurerm_app_service.aiala-app.default_site_hostname}/public/{0}/register/confirm/{1}?token={2}"
+    "Directory:Links:ResetPassword"          = "${azurerm_app_service.aiala-app.default_site_hostname}/public/{culture}/password-reset"
+    "STS:AccessTokenValidation:ApiName"      = "aiala.portal.api"
+    "STS:AccessTokenValidation:ApiSecret"    = var.db-pwd
+    "STS:AccessTokenValidation:Authority"    = azurerm_app_service.aiala-sts.default_site_hostname
+    "STS:ManagementClient:Authority"         = azurerm_app_service.aiala-sts.default_site_hostname
+    "STS:ManagementClient:ClientId"          = "sts.management"
+    "STS:ManagementClient:ClientSecret"      = var.db-pwd
+    "AzureVision:Key"                        = azurerm_cognitive_account.aiala.secondary_access_key
+    "AzureVision:TagsConfidenceThreshold"    = 0.1
+    "AzureVision:CaptionConfidenceThreshold" = 0.1
+    "AzureVision:TagBlacklist"               = ["indoor","outdoor"]
+  }
 }
 
 resource "azurerm_app_service" "aiala-sts" {
@@ -72,7 +99,7 @@ resource "azurerm_app_service" "aiala-sts" {
     "AccessTokenValidation:Authority"        = azurerm_app_service.aiala-sts.default_site_hostname
     "Portal:DefaultUrl"                      = azurerm_app_service.aiala-app.default_site_hostname
     "ApplicationInsights:InstrumentationKey" = azurerm_application_insights.aiala.instrumentation_key
-    "ConnectionStrings:StsDatabase"          = "data source=${azurerm_sql_database.aiala-sts.name}.database.windows.net;initial catalog=database;User ID=u${var.db-login};Password=${var.db-pwd};Trusted_Connection=False;Encrypt=True;Connection Timeout=30"
+    "ConnectionStrings:StsDatabase"          = "data source=${azurerm_sql_database.aiala-sts.name}.database.windows.net;initial catalog=database;User ID=${var.db-login};Password=${var.db-pwd};Trusted_Connection=False;Encrypt=True;Connection Timeout=30"
     "Directory:ApiBaseUrl"                   = azurerm_app_service.aiala-api.default_site_hostname
     "Directory:Links:ConfirmInvitation"      = "${azurerm_app_service.aiala-api.default_site_hostname}/public/{0}/invitation/{1}?token={2}"
     "Directory:Links:ConfirmRegistration"    = "${azurerm_app_service.aiala-api.default_site_hostname}/public/{0}/register/confirm/{1}?token={2}"
